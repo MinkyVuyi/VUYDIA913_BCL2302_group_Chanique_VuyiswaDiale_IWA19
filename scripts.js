@@ -46,14 +46,15 @@ moreBooks.addEventListener("click", () => {
   dataListItems.appendChild(fragment);
   showMore += remaining.length;
   moreBooks.disabled = !(matches.length - showMore > 0);
-  moreBooks.innerHTML = /* html */ `
-    <span>Show more</span>
-    <span class="list__remaining">${
-      matches.length - showMore > 0 ? matches.length - showMore : 0
-    }</span>
-  `;
+ 
 });
 
+moreBooks.innerHTML = /* html */ `
+  <span>Show more</span> (
+  <span class="list__remaining">${
+    matches.length - showMore > 0 ? matches.length - showMore : 0
+  }</span> )
+`;
 
 // Handle preview click
 document.querySelector("[data-list-items]").addEventListener("click", (event) => {
@@ -113,7 +114,16 @@ headerButton.addEventListener('click', (event) => {
     searchOverlay.close();
   });
 
-  
+
+  const searchBtn= document.querySelector('[data-search-form]');
+  searchBtn.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const searchTtl= document.querySelector('[data-search-title]');
+    console.log(searchTtl.value)
+  })
+console.log(searchBtn)
+
 // Drop down for genres
 
 const dataSearchGenres = document.querySelector("[data-search-genres]");
@@ -160,6 +170,12 @@ settingsBtn.addEventListener('click', (event) => {
   // Show the theme overlay dialog
   const themeOverlay = document.querySelector('[data-settings-overlay]');
   themeOverlay.showModal();
+
+  const settingsCancelBtn = document.querySelector('[data-settings-cancel]');
+    settingsCancelBtn.addEventListener('click', () => {
+      const themeOverlay = document.querySelector('[data-settings-overlay]');
+      themeOverlay.open = false;
+    });   
 });
 
 // Get the theme select element and the root element
@@ -177,17 +193,45 @@ const night = {
   light: '10, 10, 20',
 };
 
-// Define a function to toggle the theme based on the selected option
-function toggleTheme() {
-  const theme = themeSelect.value;
-  const colors = theme === 'night' ? night : day;
-  root.style.setProperty('--color-dark', `rgba(${colors.dark}, 0.9)`);
-  root.style.setProperty('--color-light', `rgba(${colors.light}, 1)`);
-}
 
-// Add an event listener to the theme select element
-themeSelect.addEventListener('change', toggleTheme);
+ const css={
+   day,
+   night,
+ };
 
-//Save Button in the theme overlay
-const saveBtn = document.querySelector('[]')
+ //--------------------Changing themes-----------------------------
+const dataSettingsTheme = document.querySelector('[data-settings-theme]')
+const saveButton = document.querySelector("body > dialog:nth-child(5) > div > div > button.overlay_button.overlay_button_primary")
+saveButton.addEventListener('click', (event) =>{
+    event.preventDefault()
+  if (dataSettingsTheme.value === 'day') {
+    document.querySelector('body').style.setProperty('--color-dark', day.dark)
+    document.querySelector('body').style.setProperty('--color-light', day.light)
+  }
+  document.querySelector("[data-settings-overlay]").style.display = "none";
+  if (dataSettingsTheme.value === 'night') {
+    document.querySelector('body').style.setProperty('--color-dark', night.dark)
+    document.querySelector('body').style.setProperty('--color-light', night.light)
+     }
+     document.querySelector("[data-settings-overlay]").style.display = "none";
+} )
+ //document.eventTarget(saveButton);
 
+
+//  // Set the initial theme based on the user's preference
+//  const theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day';
+
+//  // Set the initial theme CSS variables
+// document.documentElement.style.setProperty('--color-dark', css[theme].dark);
+//  document.documentElement.style.setProperty('--color-light', css[theme].light);
+
+// /*
+// // Define a function to toggle the theme based on the selected option
+
+// */
+// const toggleTheme= () => {}
+// // Add an event listener to the theme select element
+// themeSelect.addEventListener('change', toggleTheme);
+
+// //Save Button in the theme overlay
+// const saveBtn = document.querySelector('[]')
