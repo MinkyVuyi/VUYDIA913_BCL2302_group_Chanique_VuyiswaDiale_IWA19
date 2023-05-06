@@ -1,4 +1,4 @@
-
+// added const to these variables and exported theme
 export const BOOKS_PER_PAGE = 36;
 
 export const authors = {
