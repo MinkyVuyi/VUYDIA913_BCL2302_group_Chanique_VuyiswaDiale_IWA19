@@ -1,6 +1,7 @@
 //imported these from the data.js file
 import { books, authors, BOOKS_PER_PAGE, genres } from "./data.js";
 
+
 //added const and let the the below variables
 const matches = books;
 let page = 1;
@@ -10,8 +11,9 @@ let page = 1;
 let fragment = document.createDocumentFragment(); //added let to the fragment
 const extracted = books.slice(0, 36);
 
+
 /**
- * fixed errors on the const and added 'let' to the fragment variable
+ * fixed errors on the const objects of the extracted and added 'let' to the fragment variable.
  * fixed the syntax by removing the ';' and added 'of'on the for 
  * the const preview was re-ordered in a more readable manner
  */
@@ -23,7 +25,7 @@ for (const { author, title, image, id } of extracted) {
 //fixed the syntax and wrote code in a more readable way
 document.querySelector("[data-list-items]").appendChild(fragment);
 
-// ShowMore Button
+
 function createPreview({ author, id, image, title }) { //the for loop was changed into a createPreview function
     const preview = document.createElement("div");//created a preview variable and const it and assign it to the div element 
     preview.classList.add("preview");
@@ -45,6 +47,7 @@ function createPreview({ author, id, image, title }) { //the for loop was change
 const moreBooks = document.querySelector("[data-list-button]");
 let showMore = page * BOOKS_PER_PAGE;
 
+
 // show more books button
 moreBooks.addEventListener("click", () => {
     const dataListItems = document.querySelector("[data-list-items]");
@@ -58,13 +61,13 @@ moreBooks.addEventListener("click", () => {
 
     dataListItems.appendChild(fragment);
     showMore += remaining.length;
-    moreBooks.disabled = !(matches.length - showMore > 0);
-
+    moreBooks.disabled = !(remaining.length - showMore > 0);
 });
+
 
 moreBooks.innerHTML = /* html */ `
   <span>Show more</span> (
-  <span class="list__remaining">${matches.length - showMore > 0 ? matches.length - showMore : 0
+  <span class="list__remaining">${matches.length - showMore > 36 ? matches.length - showMore : 0
     }</span> )
 `;
 
@@ -108,10 +111,12 @@ document.querySelector("[data-list-items]").addEventListener("click", (event) =>
 
 });
 
+
 // Open the Search Button overlay
 const searchForm = document.createElement('form');
 searchForm.classList.add('search-form');
 
+//Header Button
 const headerButton = document.querySelector('.header__button');
 
 headerButton.addEventListener('click', (event) => {
@@ -125,14 +130,14 @@ headerButton.addEventListener('click', (event) => {
         searchOverlay.close();
     });
 
-    const searchBtn = document.querySelector('[data-search-form]');
-    searchBtn.addEventListener('submit', (event) => {
+    const searchButton = document.querySelector('[data-search-form]');
+    searchButton.addEventListener('submit', (event) => {
         event.preventDefault();
 
-        const searchTtl = document.querySelector('[data-search-title]');
-        console.log(searchTtl.value)
+        const searchTotal = document.querySelector('[data-search-title]');
+        console.log(searchTotal.value)
     })
-    console.log(searchBtn);
+    console.log(searchButton);
 
     // Search specific books
     const searchFilter = document.querySelector('[data-search-form]')
@@ -143,37 +148,39 @@ headerButton.addEventListener('click', (event) => {
         document.querySelector('[data-list-items]').style.display = 'none'
         // clear message area
         document.querySelector('[data-list-message]').innerHTML = ''
-        // get form data
+
+        // To Get the Data
         const formData = new FormData(event.target)
-        const title1 = formData.get('title');
-        const genre1 = formData.get('genre');
-        const author1 = formData.get('author');
+        const titleA = formData.get('title');
+        const genreA = formData.get('genre');
+        const authorA = formData.get('author');
+
         // array to store filtered books
         const filteredBooks = [];
         // loop through all books
         for (let i = 0; i < books.length; i++) {
             const book = books[i];
             // if genre and author are not selected, filter by title only
-            if (genre1 === 'any' && author1 === 'any') {
-                if (book.title.toLowerCase().includes(title1.toLowerCase())) {
+            if (genreA === 'any' && authorA === 'any') {
+                if (book.title.toLowerCase().includes(titleA.toLowerCase())) {
                     filteredBooks.push(book);
                 }
             }
             // if genre is not selected, filter by title and author
-            if (genre1 === 'any') {
-                if (book.title.toLowerCase().includes(title1.toLowerCase()) && book.author === author1) {
+            if (genreA === 'any') {
+                if (book.title.toLowerCase().includes(titleA.toLowerCase()) && book.author === authorA) {
                     filteredBooks.push(book);
                 }
             }
             // if title is not entered, filter by author and genre
-            if (title1 === '') {
-                if (book.author === author1 && book.genres.includes(genre1)) {
+            if (titleA === '') {
+                if (book.author === authorA && book.genres.includes(genreA)) {
                     filteredBooks.push(book);
                 }
             }
             // if neither title nor author are selected, filter by genre only
-            if (title1 === '' && author1 === 'any') {
-                if (book.genres.includes(genre1)) {
+            if (titleA === '' && authorA === 'any') {
+                if (book.genres.includes(genreA)) {
                     filteredBooks.push(book);
                 }
             }
@@ -212,14 +219,15 @@ headerButton.addEventListener('click', (event) => {
             // append preview button to fragment
             fragment2.appendChild(preview)
         }
-        // add filtered books to message area
+        // To add Filtered Books to Message Area
         const bookList2 = document.querySelector('[class="list__message"]')
         bookList2.append(fragment2)
         document.querySelector('[data-search-form]').reset()
         document.querySelector("[data-search-overlay]").close()
     });
 
-    // Drop down for genres
+
+    // Drop Down for Genres
     const dataSearchGenres = document.querySelector("[data-search-genres]");
     const allGenresOption = document.createElement("option");
     allGenresOption.value = "any";
@@ -239,6 +247,7 @@ headerButton.addEventListener('click', (event) => {
         dataSearchGenres.appendChild(element);
     }
 
+
     // Drop down for authors
     const dataSearchAuthors = document.querySelector("[data-search-authors]");
     const allAuthorsOption = document.createElement("option");
@@ -253,56 +262,50 @@ headerButton.addEventListener('click', (event) => {
     }
 });
 
+
 // Theme Mode
 
-// Get the settings button and add a click event listener to show the theme overlay dialog
-const settingsButton = document.querySelector('[data-header-settings]');
-settingsButton.addEventListener('click', (event) => {
-event.preventDefault();
-const themeOverlay = document.querySelector('[data-settings-overlay]');
-themeOverlay.showModal();
+// Settings Button
+const settingsBtn = document.querySelector('[data-header-settings]');
+settingsBtn.addEventListener('click', (event) => {
+  event.preventDefault();
+  
+  const themeOverlay = document.querySelector('[data-settings-overlay]');
+  themeOverlay.showModal();
 
-// Get the cancel button and add a click event listener to close the theme overlay dialog
-const settingsCancelBtn = document.querySelector('[data-settings-cancel]');
-settingsCancelBtn.addEventListener('click', () => {
-const themeOverlay = document.querySelector('[data-settings-overlay]');
-themeOverlay.close();
-});
-});
+  const settingsCancelBtn = document.querySelector('[data-settings-cancel]');
+  settingsCancelBtn.addEventListener('click', () => {
+    const themeOverlay = document.querySelector('[data-settings-overlay]');
+    themeOverlay.close();
+  });
+})
 
-// Define the color values for the day and night themes
+
+// Enabling the Save Button to change the background
 const css = {
-day: {
-dark: '10, 10, 20',
-light: '255, 255, 255',
-},
-night: {
-dark: '255, 255, 255',
-light: '10, 10, 20',
-},
-};
+  day: {
+    dark: '10, 10, 20',
+    light: '255, 255, 255',
+  },
+  night: {
+    dark: '255, 255, 255',
+    light: '10, 10, 20',
+  }
+}
 
-// Get the theme select element and save button
-const dataSettingsTheme = document.querySelector('[data-settings-theme]')
-const saveButton = document.querySelector("[data-settings-overlay] button.overlay__button_primary")
+const form = document.getElementById('settings');
+const themeSelect = document.querySelector('[data-settings-theme]');
 
-// Add a click event listener to the save button
-saveButton.addEventListener('click', (event) =>{
-    event.preventDefault()
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const theme = themeSelect.value;
 
-    // Get the selected theme from the theme select element
-    const selectedTheme = dataSettingsTheme.value
-
-    // Set the body element's background colors based on the selected theme
-    if (selectedTheme === 'day') {
-        document.querySelector('body').style.setProperty('--color-dark', css.day.dark)
-        document.querySelector('body').style.setProperty('--color-light', css.day.light)
-    } else if (selectedTheme === 'night') {
-        document.querySelector('body').style.setProperty('--color-dark', css.night.dark)
-        document.querySelector('body').style.setProperty('--color-light', css.night.light)
-    };
-
-    // Hide the settings overlay
-    document.querySelector("[data-settings-overlay]").style.display = "none"
+  document.documentElement.style.setProperty('--color-dark', css[theme].dark);
+  document.documentElement.style.setProperty('--color-light', css[theme].light);
 });
 
+// Initialize theme based on user's OS theme preference
+const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const initialTheme = prefersDarkMode ? 'night' : 'day';
+document.documentElement.style.setProperty('--color-dark', css[initialTheme].dark);
+document.documentElement.style.setProperty('--color-light', css[initialTheme].light);

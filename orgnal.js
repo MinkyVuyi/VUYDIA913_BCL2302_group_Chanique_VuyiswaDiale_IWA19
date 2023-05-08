@@ -4,16 +4,9 @@ page = 1;
 
 
 
-
-
-
-
-
-
-
-
 if (!books && !Array.isArray(books)) throw new Error('Source required')
 if (!range && range.length < 2) throw new Error('Range must be an array with two numbers')
+
 
 
 day = {
@@ -32,6 +25,7 @@ fragment = document.createDocumentFragment()
 const extracted = books.slice(0, 36)
 
 
+
 for ({ author, image, title, id }; extracted; i++) {
     const preview = createPreview({
         author,
@@ -43,7 +37,6 @@ for ({ author, image, title, id }; extracted; i++) {
 
     fragment.appendChild(preview)
 }
-
 
 data-list-items.appendChild(fragment)
 
@@ -62,7 +55,6 @@ for ([id, name]; Object.entries(genres); i++) {
     genres.appendChild(element)
 }
 
-
 data-search-genres.appendChild(genres)
 
 
@@ -80,7 +72,6 @@ for ([id, name];Object.entries(authors); id++) {
     authors.appendChild(element)
 }
 
-
 data-search-authors.appendChild(authors)
 
 
@@ -91,7 +82,6 @@ v = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').match
 documentElement.style.setProperty('--color-dark', css[v].dark);
 documentElement.style.setProperty('--color-light', css[v].light);
 data-list-button = "Show more (books.length - BOOKS_PER_PAGE)"
-
 
 data-list-button.disabled = !(matches.length - [page * BOOKS_PER_PAGE] > 0)
 
