@@ -268,43 +268,43 @@ headerButton.addEventListener('click', (event) => {
 // Settings Button
 const settingsBtn = document.querySelector('[data-header-settings]');
 settingsBtn.addEventListener('click', (event) => {
-  event.preventDefault();
-  
-  const themeOverlay = document.querySelector('[data-settings-overlay]');
-  themeOverlay.showModal();
+    event.preventDefault();
 
-  const settingsCancelBtn = document.querySelector('[data-settings-cancel]');
-  settingsCancelBtn.addEventListener('click', () => {
     const themeOverlay = document.querySelector('[data-settings-overlay]');
-    themeOverlay.close();
-  });
+    themeOverlay.showModal();
+
+    const settingsCancelBtn = document.querySelector('[data-settings-cancel]');
+    settingsCancelBtn.addEventListener('click', () => {
+        const themeOverlay = document.querySelector('[data-settings-overlay]');
+        themeOverlay.close();
+    });
 })
 
 
 // Enabling the Save Button to change the background
 const css = {
-  day: {
-    dark: '10, 10, 20',
-    light: '255, 255, 255',
-  },
-  night: {
-    dark: '255, 255, 255',
-    light: '10, 10, 20',
-  }
+    day: {
+        dark: '10, 10, 20',
+        light: '255, 255, 255',
+    },
+    night: {
+        dark: '255, 255, 255',
+        light: '10, 10, 20',
+    }
 }
 
 const form = document.getElementById('settings');
 const themeSelect = document.querySelector('[data-settings-theme]');
 
 form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const theme = themeSelect.value;
+    event.preventDefault();
+    const theme = themeSelect.value;
 
-  document.documentElement.style.setProperty('--color-dark', css[theme].dark);
-  document.documentElement.style.setProperty('--color-light', css[theme].light);
+    document.documentElement.style.setProperty('--color-dark', css[theme].dark);
+    document.documentElement.style.setProperty('--color-light', css[theme].light);
 });
 
-// Initialize theme based on user's OS theme preference
+// Initialize theme based on user's theme preference
 const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 const initialTheme = prefersDarkMode ? 'night' : 'day';
 document.documentElement.style.setProperty('--color-dark', css[initialTheme].dark);
